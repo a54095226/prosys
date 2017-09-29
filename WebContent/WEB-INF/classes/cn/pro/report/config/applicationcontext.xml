@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>  
+<beans xmlns="http://www.springframework.org/schema/beans"  
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:context="http://www.springframework.org/schema/context"  
+    xmlns:tx = "http://www.springframework.org/schema/tx"
+     xmlns:aop = "http://www.springframework.org/schema/aop"
+     xsi:schemaLocation="  
+    http://www.springframework.org/schema/beans   
+    http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/context   
+    http://www.springframework.org/schema/context/spring-context-3.0.xsd
+    http://www.springframework.org/schema/tx
+    http://www.springframework.org/schema/tx/spring-tx.xsd
+    http://www.springframework.org/schema/aop
+    http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <tx:annotation-driven transaction-manager="transactionManager"></tx:annotation-driven>
+    <context:property-placeholder location="classpath:cn/pro/report/config/db.properties" />  
+
+
+     <bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"  
+        destroy-method="close">  
+        <property name="driverClassName" value="${jdbc.driverClassName}" />  
+        <property name="url" value="${jdbc.url}" />  
+        <property name="username" value="${jdbc.username}" />  
+        <property name="password" value="${jdbc.password}" />  
+        <property name="defaultAutoCommit" value="false"></property>  <!-- 设置自动commit 每执行一个DML语句都会提交 -->
+    </bean> 
+    
+    <!-- 使用spring封装jdbc的模板方法，JdbcTemplate 封装了jdbc中关于 获取数据库连接、事务处理、执行sql语句、orm映射 、关闭数据库的操作，方便开发 -->
+    <bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate"> 
+     <property name="dataSource" ref="dataSource" />
+    </bean>
+    
+     <!-- 定义事务切面类 -->  
+    <tx:advice id="txAdvice" transaction-manager="transactionManager">  
+        <tx:attributes>  
+           <tx:method name="insert*" propagation="REQUIRED" />  
+       </tx:attributes>  
+    </tx:advice>
+    
+     <aop:config>
+     <!-- 定义切面类 -->  
+
+            <!-- 定义切面 即执行什么方法时切入 -->
+                <aop:pointcut id="userServerMethod" expression="execution(* cn.pro.report.server.IUserServer.*(..))" />
+                <!-- 定义切入的方法以及切入的时机 -->
+
+               <aop:advisor advice-ref="txAdvice" pointcut-ref="userServerMethod" />  
+      </aop:config>
+   
+
+    <bean id="transactionManager" 
+      class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+      <property name="dataSource"  ref="dataSource" />    
+   </bean>
+    <bean id="userDao" class="cn.pro.report.dao.UserDao">
+         <property name="jdbcTemplate" ref="jdbcTemplate" /> 
+        
+     </bean>
+         
+   <bean id="userServer" class="cn.pro.report.server.UserServer">
+         <property name="userDao" ref="userDao" />
+       <!--    <property name="transactionManager" ref="transactionManager" />  --></bean>
+         
+         
+    <bean id="userAction" class="cn.pro.report.action.UserAction" scope="prototype">
+        <property name="userServer" ref="userServer"/>
+    </bean>
+</beans>
