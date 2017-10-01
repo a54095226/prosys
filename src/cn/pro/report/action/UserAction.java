@@ -1,7 +1,9 @@
 package cn.pro.report.action;
 
 import cn.pro.report.server.IUserServer;
-import cn.pro.report.server.UserServer;
+import cn.pro.report.entity.*;
+
+import java.util.List;
 
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -14,14 +16,15 @@ public class UserAction extends ActionSupport {
 	
 	private IUserServer userServer;
 	
+	private List<User> users;
+	
 	
 	public String listUsers()
 	{
 /*		System.out.println(userDao==null);
 		
 		System.out.println(userDao.selectUserByID("010").getName());*/
-		System.out.println(userServer.listUsers().size());
-		System.out.println(userServer instanceof UserServer);
+		setUsers(userServer.listUsers());
 		return "success";
 	}
 	
@@ -51,6 +54,14 @@ public class UserAction extends ActionSupport {
 
 	public void setUserServer(IUserServer userServer) {
 		this.userServer = userServer;
+	}
+
+	public List<User> getUsers() {
+		return users;
+	}
+
+	public void setUsers(List<User> users) {
+		this.users = users;
 	}
 
 
