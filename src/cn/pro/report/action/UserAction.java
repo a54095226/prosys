@@ -18,13 +18,23 @@ public class UserAction extends ActionSupport {
 	
 	private List<User> users;
 	
+	private int page;
+	
+	private int currpage;
+	
 	
 	public String listUsers()
 	{
 /*		System.out.println(userDao==null);
 		
 		System.out.println(userDao.selectUserByID("010").getName());*/
-		setUsers(userServer.listUsers());
+		if(currpage==0)
+		setUsers(userServer.listUsers(1));
+		else
+			setUsers(userServer.listUsers(currpage));
+		System.out.println("userServer.countPage():"+userServer.countPage());
+		setPage(userServer.countPage());
+		
 		return "success";
 	}
 	
@@ -32,7 +42,7 @@ public class UserAction extends ActionSupport {
 	{
 		
 
-		userServer.initUser("G:\\excel\\工作簿消费明细完整20160614.xls");
+		userServer.initUser("E:\\cusfile\\8月消费明细.xls");
 		return "success";
 	}
 	
@@ -62,6 +72,22 @@ public class UserAction extends ActionSupport {
 
 	public void setUsers(List<User> users) {
 		this.users = users;
+	}
+
+	public int getPage() {
+		return page;
+	}
+
+	public void setPage(int page) {
+		this.page = page;
+	}
+
+	public int getCurrpage() {
+		return currpage;
+	}
+
+	public void setCurrpage(int currpage) {
+		this.currpage = currpage;
 	}
 
 

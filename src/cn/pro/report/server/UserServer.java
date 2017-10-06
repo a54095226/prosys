@@ -49,9 +49,9 @@ public class UserServer implements IUserServer {
 		return size;
 	}
 	
-	public List<User> listUsers()
+	public List<User> listUsers(int page)
 	{
-		return userDao.selectAllUser();
+		return userDao.selectAllUser(page);
 	}
 	
 	
@@ -78,6 +78,11 @@ public class UserServer implements IUserServer {
 		userDao.insertUser(new User("002","002","bbb"));
 
 
+	}
+	@Override
+	public int countPage()
+	{
+		return (userDao.countUsers()%10==0) ?userDao.countUsers()/10:userDao.countUsers()/10+1;
 	}
 
 	public IUserDao getUserDao() {

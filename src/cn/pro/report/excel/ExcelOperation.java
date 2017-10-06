@@ -68,18 +68,21 @@ public class ExcelOperation {
             	Cell cell = readsheet.getCell(1, i);   
             	Cell cell2 = readsheet.getCell(2, i);
             	Cell cell3 = readsheet.getCell(3, i);
-            	String ki = cell.getContents();
-            	String de = cell2.getContents();
+            	String id = cell.getContents();
+            	String cid = cell2.getContents();
             	String name = cell3.getContents();
             	User user = new User();
-            	if(check(users,ki))
+            	if(isValid(id,cid,name))
+            			{
+            	if(check(users,id))
             		{
-            		user.setId(ki);
-            		user.setCid(de);
+            		user.setId(id);
+            		user.setCid(cid);
             		user.setName(name);
             		
             		users.add(user);
             		}
+            			}
   
 
   
@@ -108,6 +111,11 @@ public class ExcelOperation {
         return  users;
   
 }   
+public static boolean isValid(String id,String cid,String name)
+{
+	return (id!=null)&&(cid!=null)&&(name!=null)
+			&&(!"".equals(id))&&(!"".equals(cid))&&(!"".equals(name))&&(!"编号".equals(id));
+}
 	
 public static boolean check(List<User> users,String id)
 	{

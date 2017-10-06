@@ -91,12 +91,12 @@ public class UserDao implements IUserDao {
 
 
 	@Override
-	public List<User> selectAllUser() {
+	public List<User> selectAllUser(int page) {
 		// TODO Auto-generated method stub
-         String sql ="select * from custable";
+         String sql ="select * from custable where rowid between ? and ?";
 		
 		//自动映射 BeanPropertyRowMapper 会帮程序将结果集映射按属性-字段名称映射成对象
-		List<User> list = jdbcTemplate.query(sql,new BeanPropertyRowMapper<User>(User.class));
+		List<User> list = jdbcTemplate.query(sql,new Object[]{(page-1)*10+1,page*10},new BeanPropertyRowMapper<User>(User.class));
 
 		return list;
 	}
@@ -112,6 +112,12 @@ public class UserDao implements IUserDao {
 	{
 		String sql="delete from custable";
 		return jdbcTemplate.update(sql);	
+	}
+	@Override
+	public int countUsers()
+	{
+		String sql="select count(*) from custable";
+		return jdbcTemplate.queryForInt(sql);
 	}
 
 

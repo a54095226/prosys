@@ -11,7 +11,7 @@ public interface IUserServer {
 	
 	public int initUser(String filepath);
 	
-	public List<User> listUsers();
+	public List<User> listUsers(int page);
 	
 	/*  动态织入事务处理，propagation 设置事务的传播行为
 	 * 
@@ -31,5 +31,7 @@ public interface IUserServer {
 	
 
 	public void insertUser();
+	
+	public int countPage();
 
 }
