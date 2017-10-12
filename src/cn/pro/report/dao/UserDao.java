@@ -117,7 +117,7 @@ public class UserDao implements IUserDao {
 	public int countUsers()
 	{
 		String sql="select count(*) from custable";
-		return jdbcTemplate.queryForInt(sql);
+		return jdbcTemplate.queryForObject(sql, Integer.class);
 	}
 
 

@@ -38,6 +38,9 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
      <jsp:include page="emp.jsp" flush="true"/>       
  <script src="js/jquery.min.js"></script> 
 <script src="js/bootstrap.min.js" ></script>
+<script src="js/jqPaginator.js" ></script>
+
+
 
 </body>
 </html>

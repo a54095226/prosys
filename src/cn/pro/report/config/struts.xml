@@ -10,7 +10,14 @@
 		</action>
 		
 		<action name="listUsers" class="cn.pro.report.action.UserAction" method="listUsers">
-			<result name="success">/index.jsp</result>
+			 <result type="json">  
+                <param name="root">users</param>
+            </result>  
+		</action>
+		<action name="countUsers" class="cn.pro.report.action.UserAction" method="listUsers">
+			 <result type="json">  
+                <param name="root">page</param>
+            </result>  
 		</action>
 		
 		<action name="insertUser" class="cn.pro.report.action.UserAction" method="insertUser">
