@@ -9,7 +9,7 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>姓名</th>
+                  <th>姓名1</th>
                   <th>编号</th>
                   <th>卡号</th>
                   <th>操作</th>
